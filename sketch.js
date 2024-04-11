@@ -1,7 +1,8 @@
-const GRID_HEIGHT = 45;
-var GRID_WIDTH; // grid_height * sqrt(3)
+const GRID_HEIGHT = 101/5;
+var GRID_WIDTH = 174/5; // grid_height * sqrt(3)
 let NUM_COLS;
 let NUM_ROWS;
+let ALL_TILE_IDXS;
 
 const grid = [];
 const updateQueue = [];
@@ -55,6 +56,12 @@ function updateGridElement(aGridy) {
     grid[gIdx].updateFromBottom(aGridy.possibilities);
     addToQueue(gIdx, oSize);
   }
+
+  // Debug: what are the missing tiles? 
+  // if (updateQueue==[]) {
+  //   addToQueue(23, oSize);
+  //   console.log(mX, mY);
+  // }
 }
 
 function collapse(aGridy) {
@@ -64,7 +71,7 @@ function collapse(aGridy) {
 function setup() {
   createCanvas(windowWidth, windowHeight);
 
-  GRID_WIDTH = GRID_HEIGHT*sqrt(3);
+  // GRID_WIDTH = GRID_HEIGHT*sqrt(3);
 
   NUM_COLS = ceil(width / GRID_WIDTH);
   NUM_ROWS = ceil(height / GRID_HEIGHT);
@@ -72,11 +79,28 @@ function setup() {
   // noLoop();
   noStroke();
 
+  // Get columns in the csv file
+  let tileIdx = table.getColumn("Tile Name");  
+  let tileRight = table.getColumn("Right Label");
+  let tileBottom = table.getColumn("Bottom Label");
+  let tileLeft = table.getColumn("Left Label");
+  let tileTop = table.getColumn("Top Label");
+  let tileUsed = table.getColumn("Used");
+  for (let i=0; i<tileIdx.length; i++) {
+    if(tileUsed[i] == 1) {
+      TILES.push(new Tile(drawImg(parseInt(tileIdx[i])), [parseInt(tileRight[i]),parseInt(tileBottom[i]),parseInt(tileLeft[i]),parseInt(tileTop[i])]));
+    }    
+  }
+  // print(TILES);
+  ALL_TILE_IDXS = TILES.map((_, i) => i);
+
   for (let yi = 0; yi < NUM_ROWS; yi++) {
     for (let xi = 0; xi < NUM_COLS; xi++) {
       grid.push(new Gridy(xi, yi, grid.length));
     }
   }
+  // print(grid);
+  // print(ALL_TILE_IDXS);
 }
 
 function draw() {
@@ -104,7 +128,11 @@ function draw() {
 
   for (let i = 0; i < grid.length; i++) {
     const mGridy = grid[i];
+    // print(mGridy);
     let mTile = TILES[mGridy.possibilities[0]];
+    // print(mGridy.possibilities[0]);
+    // print(TILES[mGridy.possibilities[0]]);
+    // if (mTile != [])
     mTile.draw(mGridy.xi, mGridy.yi, GRID_WIDTH, GRID_HEIGHT);
   }
 }
