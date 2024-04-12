@@ -17,10 +17,10 @@ class Tile {
     let thisR = this.edges[0];
     let otherL = TILES[i].edges[2];
     switch (thisR) {
-      case 1: FlagR = (otherL != 0); break;
-      case 2: FlagR = true; break;
-      case 3: FlagR = true; break;
-      case 0: FlagR = (otherL != 1); break;
+      case 1: FlagR = (otherL == 1); break;
+      case 2: FlagR = (otherL != 0) && (otherL != 1); break;
+      case 3: FlagR = (otherL != 1); break;
+      case 0: FlagR = (otherL != 1) && (otherL != 3); break;
     }
     return FlagR;
     // return true;
@@ -34,10 +34,10 @@ class Tile {
     let thisL = this.edges[2];
     let otherR = TILES[i].edges[0];
     switch (thisL) {
-      case 1: FlagL = (otherR != 0); break;
-      case 2: FlagL = true; break;
-      case 3: FlagL = true; break;
-      case 0: FlagL = (otherR != 1); break;
+      case 1: FlagL = (otherR == 1); break;
+      case 2: FlagL = (otherR != 1); break;
+      case 3: FlagL = (otherR != 0) && (otherR != 1); break;
+      case 0: FlagL = (otherR != 1) && (otherR != 2); break;
     }
     return FlagL;
     // return true;
@@ -54,11 +54,11 @@ let table;
 
 function preload() {
   // Load csv file
-  table = loadTable("City of Surface Tiles Data - Tiles of 4.csv", "csv", "header");
+  table = loadTable("City of Surface Tiles Data - Sheet1.csv", "csv", "header");
 
   // Load images
-  for (let i = 0; i < 35; i++) {
-    const mi = loadImage(`tiles/tiles-4/${i}.png`);
+  for (let i = 0; i < 40; i++) {
+    const mi = loadImage(`tiles/${i}.png`);
     IMAGES.push(mi);
   }
   print(IMAGES);

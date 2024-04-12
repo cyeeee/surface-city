@@ -1,5 +1,5 @@
-const GRID_HEIGHT = 101/2;
-var GRID_WIDTH = 174/2; // grid_height * sqrt(3)
+const GRID_HEIGHT = 101/3;
+const GRID_WIDTH = 174/3; // grid_height * sqrt(3)
 let NUM_COLS;
 let NUM_ROWS;
 let ALL_TILE_IDXS;
@@ -64,8 +64,6 @@ function collapse(aGridy) {
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-
-  // GRID_WIDTH = GRID_HEIGHT*sqrt(3);
 
   NUM_COLS = ceil(width / GRID_WIDTH);
   NUM_ROWS = ceil(height / GRID_HEIGHT);
