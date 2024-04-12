@@ -1,5 +1,5 @@
-const GRID_HEIGHT = 101/5;
-var GRID_WIDTH = 174/5; // grid_height * sqrt(3)
+const GRID_HEIGHT = 101/2;
+var GRID_WIDTH = 174/2; // grid_height * sqrt(3)
 let NUM_COLS;
 let NUM_ROWS;
 let ALL_TILE_IDXS;
@@ -56,12 +56,6 @@ function updateGridElement(aGridy) {
     grid[gIdx].updateFromBottom(aGridy.possibilities);
     addToQueue(gIdx, oSize);
   }
-
-  // Debug: what are the missing tiles? 
-  // if (updateQueue==[]) {
-  //   addToQueue(23, oSize);
-  //   console.log(mX, mY);
-  // }
 }
 
 function collapse(aGridy) {
@@ -85,13 +79,12 @@ function setup() {
   let tileBottom = table.getColumn("Bottom Label");
   let tileLeft = table.getColumn("Left Label");
   let tileTop = table.getColumn("Top Label");
-  let tileUsed = table.getColumn("Used");
+  
   for (let i=0; i<tileIdx.length; i++) {
-    if(tileUsed[i] == 1) {
-      TILES.push(new Tile(drawImg(parseInt(tileIdx[i])), [parseInt(tileRight[i]),parseInt(tileBottom[i]),parseInt(tileLeft[i]),parseInt(tileTop[i])]));
-    }    
+    TILES.push(new Tile(drawImg(parseInt(tileIdx[i])), [parseInt(tileRight[i]),parseInt(tileBottom[i]),parseInt(tileLeft[i]),parseInt(tileTop[i])])); 
+    
   }
-  // print(TILES);
+  print("pushed");
   ALL_TILE_IDXS = TILES.map((_, i) => i);
 
   for (let yi = 0; yi < NUM_ROWS; yi++) {
@@ -99,8 +92,6 @@ function setup() {
       grid.push(new Gridy(xi, yi, grid.length));
     }
   }
-  // print(grid);
-  // print(ALL_TILE_IDXS);
 }
 
 function draw() {
