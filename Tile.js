@@ -54,11 +54,11 @@ let table;
 
 function preload() {
   // Load csv file
-  table = loadTable("City of Surface Tiles Data - Sheet1.csv", "csv", "header");
+  table = loadTable("tile-edges-data.csv", "csv", "header");
 
   // Load images
-  for (let i = 0; i < 40; i++) {
-    const mi = loadImage(`tiles/${i}.png`);
+  for (let i = 0; i < 98; i++) {
+    const mi = loadImage(`tiles/tiles-final/${i}.png`);
     IMAGES.push(mi);
   }
   print(IMAGES);
