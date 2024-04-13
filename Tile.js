@@ -23,8 +23,6 @@ class Tile {
       case 0: FlagR = (otherL != 1) && (otherL != 3); break;
     }
     return FlagR;
-    // return true;
-    // return (this.edges[0] == TILES[i].edges[2]);
   }
   allowBottom(i) {
     return this.edges[1] == TILES[i].edges[3];
@@ -40,8 +38,6 @@ class Tile {
       case 0: FlagL = (otherR != 1) && (otherR != 2); break;
     }
     return FlagL;
-    // return true;
-    // return this.edges[2] == TILES[i].edges[0];
   }
   allowTop(i) {
     return this.edges[3] == TILES[i].edges[1];
@@ -50,6 +46,7 @@ class Tile {
 
 const IMAGES = [];
 const TILES = [];
+const TILES_NUM = 98;
 let table;
 
 function preload() {
@@ -57,9 +54,8 @@ function preload() {
   table = loadTable("tile-edges-data.csv", "csv", "header");
 
   // Load images
-  for (let i = 0; i < 98; i++) {
-    const mi = loadImage(`tiles/tiles-final/${i}.png`);
+  for (let i = 0; i < TILES_NUM; i++) {
+    const mi = loadImage(`tiles/${i}.png`);
     IMAGES.push(mi);
   }
-  print(IMAGES);
 }

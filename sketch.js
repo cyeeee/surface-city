@@ -1,5 +1,5 @@
-const GRID_HEIGHT = 101/3;
-const GRID_WIDTH = 174/3; // grid_height * sqrt(3)
+const GRID_HEIGHT = 101/2.5;
+const GRID_WIDTH = 174/2.5; // width = height * sqrt(3)
 let NUM_COLS;
 let NUM_ROWS;
 let ALL_TILE_IDXS;
@@ -85,7 +85,6 @@ function setup() {
     }
     
   }
-  print("pushed");
   ALL_TILE_IDXS = TILES.map((_, i) => i);
 
   for (let yi = 0; yi < NUM_ROWS; yi++) {
@@ -120,11 +119,7 @@ function draw() {
 
   for (let i = 0; i < grid.length; i++) {
     const mGridy = grid[i];
-    // print(mGridy);
     let mTile = TILES[mGridy.possibilities[0]];
-    // print(mGridy.possibilities[0]);
-    // print(TILES[mGridy.possibilities[0]]);
-    // if (mTile != [])
     mTile.draw(mGridy.xi, mGridy.yi, GRID_WIDTH, GRID_HEIGHT);
   }
 }
