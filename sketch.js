@@ -77,9 +77,19 @@ function setup() {
   let tileBottom = table.getColumn("Bottom Label");
   let tileLeft = table.getColumn("Left Label");
   let tileTop = table.getColumn("Top Label");
+<<<<<<< Updated upstream
   
   for (let i=0; i<tileIdx.length; i++) {
     TILES.push(new Tile(drawImg(parseInt(tileIdx[i])), [parseInt(tileRight[i]),parseInt(tileBottom[i]),parseInt(tileLeft[i]),parseInt(tileTop[i])])); 
+=======
+  let tileUsed = table.getColumn("Used");
+  
+  for (let i=0; i<tileIdx.length; i++) {
+    if (parseInt(tileUsed[i]) == 1) {
+      TILES.push(new Tile(drawImg(parseInt(tileIdx[i])), [parseInt(tileRight[i]),parseInt(tileBottom[i]),parseInt(tileLeft[i]),parseInt(tileTop[i])])); 
+    }
+    
+>>>>>>> Stashed changes
     
   }
   print("pushed");

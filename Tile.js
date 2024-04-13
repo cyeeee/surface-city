@@ -33,7 +33,7 @@ class Tile {
     let FlagL;
     let thisL = this.edges[2];
     let otherR = TILES[i].edges[0];
-    switch (thisL) {
+    switch (thisL) { 
       case 1: FlagL = (otherR == 1); break;
       case 2: FlagL = (otherR != 1); break;
       case 3: FlagL = (otherR != 0) && (otherR != 1); break;
