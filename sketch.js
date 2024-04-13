@@ -95,7 +95,7 @@ function setup() {
 }
 
 function draw() {
-  background(220);
+  background(220, 0);
 
   const byPossibilities = grid.toSorted((a, b) => a.possibilities.length - b.possibilities.length);
   const candidates = byPossibilities.filter((p) => p.possibilities.length > 1);
