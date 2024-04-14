@@ -12,6 +12,14 @@ The most structured and convenient district is SC-68, with just the right amount
 
 SC-97 is the most frightening district with many fading ends. Many things seem to be the same as SC-68: dense buildings, countless surface connections, etc. However, there is minimal breathing space; it is a labyrinth that no one can get out of. The best way to survive one has to be cautious enough to avoid those fading ends, which will swallow them into nothingness. Nothingness is different from death; one may be technically still alive in nothingness, but all proof of their existence is erased from the world — even more horrible than death. As the number of people vanishing drastically increases, the remaining residents begin to be aware of this fact and start to panic. A few people also become curious about where those people went, and bring up a hypothesis that the vanished people actually “entered” the buildings. But what does “enter” mean? Isn’t everything just directly accessible, right on the surface? 
 
+## Cityscape Overview
+SC-68:
+![SC-68](https://github.com/cyeeee/surface-city/blob/main/SC-68.png)
+SC-39:
+![SC-39](https://github.com/cyeeee/surface-city/blob/main/SC-39.png)
+SC-41:
+![SC-41](https://github.com/cyeeee/surface-city/blob/main/SC-41.png)
+
 ## City Construction
 Our city is built with p5.js coding and Adobe Illustrator. We first used Adobe Illustrator to create tile images, which were fed into our p5.js code for cityscape generation. The technique we adapted is the Wave Function Collapse model introduced in our [workshop](https://github.com/idm-visible-cities/visible-cities). 
 
