@@ -77,7 +77,7 @@ function setup() {
   let tileBottom = table.getColumn("Bottom Label");
   let tileLeft = table.getColumn("Left Label");
   let tileTop = table.getColumn("Top Label");
-  let tileUsed = table.getColumn("Used");
+  let tileUsed = table.getColumn("Used - 68"); // Change the number 68 to the district you want to see. Current available districts: 0, 1, 2, 3, 4, 39, 41, 68, 97
   
   for (let i=0; i<tileIdx.length; i++) {
     if (parseInt(tileUsed[i]) == 1) {
