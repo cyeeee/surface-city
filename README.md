@@ -27,3 +27,6 @@ Our city is built with p5.js coding and Adobe Illustrator. We first used Adobe I
 - Italo Calvino, *Invisible Cities*
 - Ustwo Studio Ltd., *Monument Valley*
 - Sukeban Games, *VA-11 Hall-A: Cyberpunk Bartender Action*
+
+## Exhibition
+[Visible Cities: Workshop Exhibition](https://www.critlabreview.com/articles/visible-cities)
