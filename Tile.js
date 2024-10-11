@@ -46,7 +46,7 @@ class Tile {
 
 const IMAGES = [];
 const TILES = [];
-const TILES_NUM = 98;
+let TILES_NUM = 98;
 let table;
 
 function preload() {

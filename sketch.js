@@ -4,7 +4,11 @@ let NUM_COLS;
 let NUM_ROWS;
 let ALL_TILE_IDXS;
 
-const grid = [];
+let buttonGenerate;
+let dropdownMenu;
+let cityIdx = "68";
+
+let grid = [];
 const updateQueue = [];
 let hasUpdated = {};
 
@@ -68,16 +72,36 @@ function setup() {
   NUM_COLS = ceil(width / GRID_WIDTH);
   NUM_ROWS = ceil(height / GRID_HEIGHT);
 
-  // noLoop();
   noStroke();
 
+  buttonGenerate = createButton("Go!");
+  buttonGenerate.position(windowWidth / 2, windowHeight - 100);
+  buttonGenerate.mouseClicked(resetGrid);
+
+  dropdownMenu = createSelect();
+  dropdownMenu.position(windowWidth/2, windowHeight-200);
+  dropdownMenu.option('0');
+  dropdownMenu.option('1');
+  dropdownMenu.option('2');
+  dropdownMenu.option('3');
+  dropdownMenu.option('4');
+  dropdownMenu.option('39');
+  dropdownMenu.option('41');
+  dropdownMenu.option('68');
+  dropdownMenu.option('97');
+
+  initializeTiles();
+  initializeGrid();
+}
+
+function initializeTiles() {
   // Get columns in the csv file
   let tileIdx = table.getColumn("Tile Name");  
   let tileRight = table.getColumn("Right Label");
   let tileBottom = table.getColumn("Bottom Label");
   let tileLeft = table.getColumn("Left Label");
   let tileTop = table.getColumn("Top Label");
-  let tileUsed = table.getColumn("Used - 68"); // Change the number 68 to the district you want to see. Current available districts: 0, 1, 2, 3, 4, 39, 41, 68, 97
+  let tileUsed = table.getColumn("Used - " + dropdownMenu.selected().toString()); // Change the number 68 to the district you want to see. Current available districts: 0, 1, 2, 3, 4, 39, 41, 68, 97
   
   for (let i=0; i<tileIdx.length; i++) {
     if (parseInt(tileUsed[i]) == 1) {
@@ -86,12 +110,21 @@ function setup() {
     
   }
   ALL_TILE_IDXS = TILES.map((_, i) => i);
+}
 
+function initializeGrid() {
+  grid = [];
   for (let yi = 0; yi < NUM_ROWS; yi++) {
     for (let xi = 0; xi < NUM_COLS; xi++) {
       grid.push(new Gridy(xi, yi, grid.length));
     }
   }
+}
+
+function resetGrid() {
+  initializeTiles(); // Reinitialize the TILES array
+  initializeGrid();  // Reinitialize the grid
+  draw(); // Manually trigger draw once
 }
 
 function draw() {
@@ -102,13 +135,11 @@ function draw() {
 
   if (candidates.length > 0) {
     const candidate = candidates[0];
-    print("collapsing", candidate.i);
+    // print("collapsing", candidate.i);
     collapse(grid[candidate.i]);
 
     updateQueue.push(candidate.i);
     hasUpdated[candidate.i] = candidate.i;
-  } else {
-    noLoop();
   }
 
   while (updateQueue.length > 0) {
@@ -122,8 +153,4 @@ function draw() {
     let mTile = TILES[mGridy.possibilities[0]];
     mTile.draw(mGridy.xi, mGridy.yi, GRID_WIDTH, GRID_HEIGHT);
   }
-}
-
-function mouseClicked() {
-  redraw();
 }
