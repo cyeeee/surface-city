@@ -7,11 +7,12 @@ let ALL_TILE_IDXS;
 let buttonGenerate;
 let dropdownMenu;
 let selectedCityIdx = "0";
-let cityIdx = "68";
+let cityIdx = "0";
 
 let grid = [];
 const updateQueue = [];
 let hasUpdated = {};
+let fillerTile;
 
 function toI(xi, yi) {
   return yi * NUM_COLS + xi;
@@ -108,7 +109,8 @@ function initializeTiles() {
   let tileLeft = table.getColumn("Left Label");
   let tileTop = table.getColumn("Top Label");
   let tileUsed = table.getColumn("Used - " + dropdownMenu.selected().toString()); // Change the number 68 to the district you want to see. Current available districts: 0, 1, 2, 3, 4, 39, 41, 68, 97
-  
+  fillerTile = tileUsed[0];
+
   for (let i=0; i<tileIdx.length; i++) {
     if (parseInt(tileUsed[i]) == 1) {
       TILES.push(new Tile(drawImg(parseInt(tileIdx[i])), [parseInt(tileRight[i]),parseInt(tileBottom[i]),parseInt(tileLeft[i]),parseInt(tileTop[i])])); 
@@ -157,8 +159,20 @@ function draw() {
 
   for (let i = 0; i < grid.length; i++) {
     const mGridy = grid[i];
-    let mTile = TILES[mGridy.possibilities[0]];
-    mTile.draw(mGridy.xi, mGridy.yi, GRID_WIDTH, GRID_HEIGHT);
+
+    if (mGridy.possibilities.length > 0) {
+      const mTile = TILES[mGridy.possibilities[0]];
+
+      if (mTile) {
+        mTile.draw(mGridy.xi, mGridy.yi, GRID_WIDTH, GRID_HEIGHT);
+      } else {
+        console.error(`Error: Tile at index ${mGridy.possibilities[0]} is undefined.`);
+        resetGrid();
+      }
+    } else {
+      console.error(`Error: Grid element ${i} has no valid possibilities.`);
+      resetGrid();
+    }
   }
 
   fill("rgba(255, 255, 255, 0.25)");
