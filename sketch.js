@@ -95,7 +95,7 @@ function setup() {
   });
 
   buttonGenerate = createButton("Go!");
-  buttonGenerate.position(windowWidth / 2 + 100, windowHeight - 115);
+  buttonGenerate.position(windowWidth / 2 + 95, windowHeight - 115);
   buttonGenerate.mouseClicked(() => {
     resetGrid();
   });
@@ -151,7 +151,7 @@ function resetGrid() {
 
 function UIPanel() {
   fill("rgba(255, 255, 255, 0.25)");
-  rect(width / 2 - 300, height - 300, 600, 300);
+  rect(width / 2 - 300, height - 300, 600, 300, 20, 20, 0, 0);
   fill(0);
   textFont("monospace", 40);
   textAlign(CENTER, CENTER);
