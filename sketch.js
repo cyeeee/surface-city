@@ -84,6 +84,8 @@ function setup() {
   dropdownMenu.option("2");
   dropdownMenu.option("3");
   dropdownMenu.option("4");
+  dropdownMenu.option("14");
+  dropdownMenu.option("20");
   dropdownMenu.option("39");
   dropdownMenu.option("41");
   dropdownMenu.option("68");
