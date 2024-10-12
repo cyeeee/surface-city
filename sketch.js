@@ -6,6 +6,7 @@ let ALL_TILE_IDXS;
 
 let buttonGenerate;
 let dropdownMenu;
+let selectedCityIdx = "0";
 let cityIdx = "68";
 
 let grid = [];
@@ -74,12 +75,8 @@ function setup() {
 
   noStroke();
 
-  buttonGenerate = createButton("Go!");
-  buttonGenerate.position(windowWidth / 2, windowHeight - 100);
-  buttonGenerate.mouseClicked(resetGrid);
-
   dropdownMenu = createSelect();
-  dropdownMenu.position(windowWidth/2, windowHeight-200);
+  dropdownMenu.position(windowWidth / 2 + 10, windowHeight - 103);
   dropdownMenu.option('0');
   dropdownMenu.option('1');
   dropdownMenu.option('2');
@@ -89,6 +86,15 @@ function setup() {
   dropdownMenu.option('41');
   dropdownMenu.option('68');
   dropdownMenu.option('97');
+  dropdownMenu.changed(()=>{
+    selectedCityIdx = dropdownMenu.selected().toString();
+  });
+
+  buttonGenerate = createButton("Go!");
+  buttonGenerate.position(windowWidth / 2 + 100, windowHeight - 115);
+  buttonGenerate.mouseClicked(() => {
+    resetGrid();
+  });
 
   initializeTiles();
   initializeGrid();
@@ -124,6 +130,7 @@ function initializeGrid() {
 function resetGrid() {
   initializeTiles(); // Reinitialize the TILES array
   initializeGrid();  // Reinitialize the grid
+  cityIdx = selectedCityIdx;
   draw(); // Manually trigger draw once
 }
 
@@ -153,4 +160,16 @@ function draw() {
     let mTile = TILES[mGridy.possibilities[0]];
     mTile.draw(mGridy.xi, mGridy.yi, GRID_WIDTH, GRID_HEIGHT);
   }
+
+  fill("rgba(255, 255, 255, 0.25)");
+  rect(width / 2 - 300, height - 300, 600, 300);
+  fill(0);
+  textFont("monospace", 40);
+  textAlign(CENTER, CENTER);
+  text("The Surface City", windowWidth / 2, windowHeight - 200);
+  textSize(30);
+  let districtName = "SC-" + cityIdx;
+  text(districtName, windowWidth / 2, windowHeight - 150);
+  textSize(20);
+  text("Change District: ", windowWidth / 2 - 80, windowHeight - 90);
 }
