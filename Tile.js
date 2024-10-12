@@ -52,6 +52,7 @@ let table;
 function preload() {
   // Load csv file
   table = loadTable("tile-edges-data.csv", "csv", "header");
+  story = loadStrings('./story.txt');
 
   // Load images
   for (let i = 0; i < TILES_NUM; i++) {

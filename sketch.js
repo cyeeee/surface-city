@@ -3,6 +3,10 @@ const GRID_WIDTH = 174 / 2.5; // width = height * sqrt(3)
 let NUM_COLS;
 let NUM_ROWS;
 let ALL_TILE_IDXS;
+let story;
+let storyX, storyY, storyWidth, storyHeight;
+let scrollPos=0;
+let pg;
 
 let buttonGenerate;
 let dropdownMenu;
@@ -14,6 +18,7 @@ const updateQueue = [];
 let hasUpdated = {};
 
 let uiVisible = true;
+let storyVisible = true;
 
 function toI(xi, yi) {
   return yi * NUM_COLS + xi;
@@ -69,41 +74,6 @@ function collapse(aGridy) {
   aGridy.possibilities = [random(aGridy.possibilities)];
 }
 
-function setup() {
-  createCanvas(windowWidth, windowHeight);
-
-  NUM_COLS = ceil(width / GRID_WIDTH);
-  NUM_ROWS = ceil(height / GRID_HEIGHT);
-
-  noStroke();
-
-  dropdownMenu = createSelect();
-  dropdownMenu.position(windowWidth / 2 + 10, windowHeight - 103);
-  dropdownMenu.option("0");
-  dropdownMenu.option("1");
-  dropdownMenu.option("2");
-  dropdownMenu.option("3");
-  dropdownMenu.option("4");
-  dropdownMenu.option("14");
-  dropdownMenu.option("20");
-  dropdownMenu.option("39");
-  dropdownMenu.option("41");
-  dropdownMenu.option("68");
-  dropdownMenu.option("97");
-  dropdownMenu.changed(() => {
-    selectedCityIdx = dropdownMenu.selected().toString();
-  });
-
-  buttonGenerate = createButton("Go!");
-  buttonGenerate.position(windowWidth / 2 + 95, windowHeight - 115);
-  buttonGenerate.mouseClicked(() => {
-    resetGrid();
-  });
-
-  initializeTiles();
-  initializeGrid();
-}
-
 function initializeTiles() {
   // Clear the TILES array to avoid adding to the previous set
   TILES.length = 0;
@@ -149,24 +119,118 @@ function resetGrid() {
   draw(); // Manually trigger draw once
 }
 
+function setup() {
+  createCanvas(windowWidth, windowHeight);
+
+  NUM_COLS = ceil(width / GRID_WIDTH);
+  NUM_ROWS = ceil(height / GRID_HEIGHT);
+
+  storyX = width / 6;
+  storyY = width/1920*20;
+  storyWidth = (width / 6) * 4;
+  storyHeight = (height / 3) * 2 - 40; // Scroll window height
+  pg = createGraphics(storyWidth - 50, storyHeight - 105);
+
+  noStroke();
+
+  dropdownMenu = createSelect();
+  dropdownMenu.position((width - dropdownMenu.width) / 2, height - 120/903*height);
+  dropdownMenu.option("0");
+  dropdownMenu.option("1");
+  dropdownMenu.option("2");
+  dropdownMenu.option("3");
+  dropdownMenu.option("4");
+  dropdownMenu.option("14");
+  dropdownMenu.option("20");
+  dropdownMenu.option("39");
+  dropdownMenu.option("41");
+  dropdownMenu.option("68");
+  dropdownMenu.option("97");
+  dropdownMenu.changed(() => {
+    selectedCityIdx = dropdownMenu.selected().toString();
+  });
+
+  buttonGenerate = createButton("Go!");
+  buttonGenerate.position((width - buttonGenerate.width)/2, height - 90/903*height);
+  buttonGenerate.mouseClicked(() => {
+    resetGrid();
+  });
+
+  initializeTiles();
+  initializeGrid();
+
+  // Draw story content to the buffer only once in setup (or when necessary)
+  drawStoryToBuffer();
+}
+
+function drawStoryToBuffer() {
+  pg.textSize(15);
+  pg.textWrap(WORD);
+  pg.clear();
+  pg.fill(0);
+  pg.textFont("monospace");
+  pg.textAlign(LEFT, TOP);
+
+  let offset_y = -scrollPos; // Initial offset
+  for (let i = 0; i < story.length; i++) {
+    let currentText = story[i];
+    let textHeight = pg.textLeading() * ceil(pg.textWidth(currentText) / (pg.width)); // Estimate height
+    pg.text(currentText, 0, offset_y, pg.width); // Draw paragraph within the buffer
+    offset_y += textHeight + width/1920*20; // Adjust Y position
+  }
+}
+
 function UIPanel() {
-  fill("rgba(255, 255, 255, 0.25)");
-  rect(width / 2 - 300, height - 300, 600, 300, 20, 20, 0, 0);
+  fill("rgba(255, 255, 255, 0.7)");
+
+  // Panel
+  translate(width / 2 - 250, (height / 3) * 2 + 40);
+  rect(0, 0, 500, height / 3, 20, 20, 0, 0);
+  translate(-width / 2 + 250, (-height / 3) * 2 - 40);
+
+  // UI Text
   fill(0);
-  textFont("monospace", 40);
+  textFont("monospace", 30);
   textAlign(CENTER, CENTER);
-  text("The Surface City", windowWidth / 2, windowHeight - 200);
+  translate(width / 2, (height / 3) * 2 + 20/903*height);
+  text("The Surface City", 0, 60/903*height);
   textSize(30);
   let districtName = "SC-" + cityIdx;
-  text(districtName, windowWidth / 2, windowHeight - 150);
-  textSize(20);
-  text("Change District: ", windowWidth / 2 - 80, windowHeight - 90);
+  text(districtName, 0, 100/903*height);
+  textSize(16);
+  text("Change To District Index: ", 0, 145/903*height);
+  fill("#65767f");
   textSize(15);
-  text("Press \"u\" key to toggle this panel", windowWidth / 2, windowHeight - 40);
+  text('Press "p" to toggle this panel', 0, 240/903*height);
+  textSize(15);
+  text('Press "s" to toggle Story of The Surface City', 0, 270/903*height);
+  translate(-width / 2, (-height / 3) * 2);
 }
+
+function StoryPanel(storyX, storyY, storyWidth, storyHeight) {
+  // Panel Background
+  fill("rgba(255, 255, 255, 0.7)");
+  rect(storyX, storyY, storyWidth, storyHeight, 20, 20, 20, 20);
+
+  // Draw the off-screen buffer onto the main canvas within the defined panel
+  image(pg, storyX + 25, storyY + 80);
+
+  // Title text (outside of the clipping area)
+  fill(0);
+  textFont("monospace", 30);
+  textAlign(CENTER, CENTER);
+  text("Story of The Surface City", width / 2, 60); // Title centered at the top
+}
+
 
 function draw() {
   background(220, 0);
+
+  // Define the scrollable area (a "window" where the story will be displayed)
+  let storyX = width / 6;
+  let storyY = 20;
+  let storyWidth = (width / 6) * 4;
+  let storyHeight = (height / 3) * 2 - 40; // Scroll window height
 
   const byPossibilities = grid.toSorted(
     (a, b) => a.possibilities.length - b.possibilities.length
@@ -210,10 +274,13 @@ function draw() {
   if (uiVisible) {
     UIPanel();
   }
+  if (storyVisible) {
+    StoryPanel(storyX, storyY, storyWidth, storyHeight);
+  }
 }
 
 function keyPressed() {
-  if (key == "u") {
+  if (key == "p") {
     uiVisible = !uiVisible; // Toggle UI visibility state
 
     // Show or hide UI elements based on the new state
@@ -224,7 +291,14 @@ function keyPressed() {
       dropdownMenu.hide();
       buttonGenerate.hide();
     }
-
-    return false; // Prevent the default behavior of TAB key
   }
+  if (key == 's') {
+    storyVisible = !storyVisible; // Toggle Story visibility state
+  }
+}
+
+function mouseWheel(event) {
+  scrollPos += event.deltaY * 0.1; // Adjust scroll speed
+  scrollPos = constrain(scrollPos, 0, min(scrollPos, 600)); // Limit scrolling
+  drawStoryToBuffer();
 }

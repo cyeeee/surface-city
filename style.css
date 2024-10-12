@@ -10,17 +10,18 @@ canvas {
 }
 
 button {
-  padding: 10px 20px;
+  padding: 5px 20px;
   text-align: center;
   border: none;
-  background-color: aliceblue;
+  background-color: #f5cac3;
   font-size: 20px;
   font-family: monospace;
   border-radius: 8px;
 }
 
 button:hover {
-  background-color:cadetblue;
+  background-color:#65767f;
+  color: #d1eefc;
 }
 
 select {
